@@ -4,6 +4,15 @@ import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function clearAll() {
+  await sql`DROP TABLE IF EXISTS users`;
+  await sql`DROP TABLE IF EXISTS invoices`;
+  await sql`DROP TABLE IF EXISTS customers`;
+  await sql`DROP TABLE IF EXISTS revenue`;
+}
+
 async function seedUsers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await sql`
@@ -103,12 +112,19 @@ async function seedRevenue() {
 
 export async function GET() {
   try {
-    const result = await sql.begin((sql) => [
-      seedUsers(),
-      seedCustomers(),
-      seedInvoices(),
-      seedRevenue(),
-    ]);
+    // const result = await sql.begin((sql) => [
+    //     clearAll(),
+    //   seedUsers(),
+    //   seedCustomers(),
+    //   seedInvoices(),
+    //   seedRevenue(),
+    // ]);
+
+    // await sql.begin((sql) => clearAll())
+    //  await sql.begin((sql) => seedUsers())
+    // await sql.begin((sql) => seedCustomers())
+    await sql.begin((sql) => seedInvoices())
+    // await sql.begin((sql) => seedRevenue())
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {

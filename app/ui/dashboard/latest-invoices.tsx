@@ -3,11 +3,10 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import { LatestInvoice } from '@/app/lib/definitions';
-export default async function LatestInvoices({
-  latestInvoices,
-}: {
-  latestInvoices: LatestInvoice[];
-}) {
+import {fetchLatestInvoices} from "@/app/lib/data";
+export default async function LatestInvoices() {
+    const latestInvoices = await fetchLatestInvoices()
+
   return (
     <div className="flex w-full flex-col md:col-span-4">
       <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
@@ -16,7 +15,7 @@ export default async function LatestInvoices({
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         {/* NOTE: Uncomment this code in Chapter 7 */}
 
-        {/* <div className="bg-white px-6">
+        <div className="bg-white px-6">
           {latestInvoices.map((invoice, i) => {
             return (
               <div
@@ -28,7 +27,7 @@ export default async function LatestInvoices({
                   },
                 )}
               >
-                <div className="flex items-center">
+                <div className="flex items-center overflow-hidden">
                   <Image
                     src={invoice.image_url}
                     alt={`${invoice.name}'s profile picture`}
@@ -46,14 +45,14 @@ export default async function LatestInvoices({
                   </div>
                 </div>
                 <p
-                  className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
+                  className={`${lusitana.className} text-sm font-medium md:text-base`}
                 >
-                  {invoice.amount}
+                    {invoice.amount.length > 7 ? invoice.amount.slice(0, 5) + "..." : invoice.amount}
                 </p>
               </div>
             );
           })}
-        </div> */}
+        </div>
         <div className="flex items-center pb-2 pt-6">
           <ArrowPathIcon className="h-5 w-5 text-gray-500" />
           <h3 className="ml-2 text-sm text-gray-500 ">Updated just now</h3>
