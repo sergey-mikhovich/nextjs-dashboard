@@ -2,27 +2,7 @@
 
 import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {useEffect, useMemo, useRef} from "react";
 import {useDebouncedCallback} from "use-debounce";
-
-// export function useDebounceCallback<T extends (...args: any[]) => void>(
-//     callback: T,
-//     delay: number
-// ) {
-//     const callbackRef = useRef(callback)
-//
-//     useEffect(() => {
-//         callbackRef.current = callback;
-//     }, [callback]);
-//
-//     return useMemo(() => {
-//         let timerId: number | undefined;
-//         return (...args: Parameters<T>) => {
-//             window.clearTimeout(timerId);
-//             timerId = window.setTimeout(() => callbackRef.current(...args), delay);
-//         }
-//     }, [delay])
-// }
 
 export default function Search({placeholder}: { placeholder: string }) {
     const searchParams = useSearchParams()
